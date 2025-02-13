@@ -1,0 +1,15 @@
+{"paintball": {
+        "details": {
+            "date": "30/12/2024",
+            "duration": "8:30 onwards",
+            "venue": "Agri Koli Ground, Ovale"
+        },
+        "contact": {
+            "head": "Nayan Pingat",
+            "head_mobile_no": "8767369835",
+            "volunteer": ["Sonu Prajapati" , "Shaliesh Mittapalli"],
+            "volunteer_mobile_no": ["8667369835" , "9970752318"]
+        },
+        "logo" : "https://res.cloudinary.com/dyhby7bo9/image/upload/v1735114391/OJUSPHOTOS/txhagfnx2aopmb6xmeod.png",
+        "images":["",""]
+}}

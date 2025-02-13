@@ -1,24 +1,75 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .  import data as data
+from .  import data as data_sports
 from django.core.mail import send_mail
 import json
+from django.conf.urls.static import static 
+from django.conf import settings
+import os
 # Create your views here.
-def events_all(requests,):
-    """
-    Sends complete details of all the events happening
-    """
-    return JsonResponse(data.sports_data)
 
-def event_details(requests, sport):
-    """
-    View to handle the event details page
-    """
-    return JsonResponse(data.sports_data[sport])
 
-def register(requests):
-    pass
+"""
+ENDPOINTS FOR retrieving DATA 
+"""
+# SPORTS
+def sport_events(requests,):
+    """
+    Sends complete details of all the sporting events
+    """
+    return JsonResponse(data_sports.sports_data)
 
+def sport_events_details(requests, sport):
+    """
+    View to handle the sports details page
+    """
+    return JsonResponse(data_sports.sports_data[sport])
+
+# CULTURAL
+def cultural_events(requests,):
+    """
+    Sends complete details of all the cultural events
+    """
+    # Open and read the JSON file
+    with open("static\json\cultural.json", 'r') as file:
+        data = json.load(file)
+
+    return JsonResponse(data)
+
+def cultural_events_details(requests, events):
+    """
+    Sends complete details of all the cultural events
+    """
+    # Open and read the JSON file
+    with open("static\json\cultural.json", 'r') as file:
+        data = json.load(file)
+
+    return JsonResponse(data[events])
+
+
+
+
+"""
+REGISTERATION AND ALL KINDS OF FORM SUBMISSION 
+"""
+def register(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)  # Parse JSON body
+            name = data.get('name')  # Example form field
+            email = data.get('email')  # Example form field
+
+            # Process the data (e.g., save to the database, send an email, etc.)
+            return JsonResponse({'message': f"Received name: {name}, email: {email}"}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
+
+
+"""
+SENDING EMAILS AND OTHER UPDATES
+"""
 def send_emails(request, recievers, content):
     """
     Endpoint to send emails
@@ -41,16 +92,3 @@ def send_emails(request, recievers, content):
     receiver,
     fail_silently=False,)
 
-def register(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)  # Parse JSON body
-            name = data.get('name')  # Example form field
-            email = data.get('email')  # Example form field
-
-            # Process the data (e.g., save to the database, send an email, etc.)
-            return JsonResponse({'message': f"Received name: {name}, email: {email}"}, status=200)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
-    return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
